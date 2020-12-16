@@ -1,0 +1,7 @@
+@import url(./__container-increase/popup__container-increase.css);
+@import url(../__close-img/popup__close-img.css);
+
+.popup__increase-img {
+  background-color:  #000000;
+  opacity: 0.9;
+}

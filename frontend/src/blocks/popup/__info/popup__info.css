@@ -1,0 +1,10 @@
+@import url(../__container_info/popup__container_info.css);
+@import url(../__info-success/popup__info-success.css);
+@import url(../__info-fail/popup__info-fail.css);
+@import url(../__info-title/popup__info-title.css);
+
+.popup__info{
+    width: 120px;
+    height: 120px;
+    margin: 60px auto 33px;
+}

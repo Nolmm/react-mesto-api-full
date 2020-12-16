@@ -1,0 +1,32 @@
+.popup__item {
+  width: 358px;
+  height: 27.26px;
+  border-bottom: solid 1px rgba(0, 0, 0, .2);
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin-left: 36px;
+  margin-right: 36px;
+  margin-top: 29.74px;
+  font-size: 14px;
+  line-height: 17px;
+
+}
+
+.popup__item:last-of-type {
+  margin-bottom: 0;
+}
+
+@media only screen and (max-width: 532px) {
+  .popup__item {
+    width: 250px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .popup__item {
+    width: 190px;
+  }
+}

@@ -1,0 +1,13 @@
+.elements__like_active {
+  opacity: 1;
+  background-image: url(../../../images/likeactive.svg);
+  width: 20.76px;
+  height: 18.13px;
+  border: none;
+  box-shadow: none;
+  box-sizing: border-box;
+  background-size: contain;
+  transition: .3s ease;
+  cursor: pointer;
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,19 @@
+.elements__trash {
+  background-image: url(../../../images/del_btn.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  width: 18px;
+  height: 20px;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  cursor: pointer;
+  transition: .3s ease;
+  display: none;
+}
+
+.elements__trash:hover {
+  opacity: 0.6;
+}

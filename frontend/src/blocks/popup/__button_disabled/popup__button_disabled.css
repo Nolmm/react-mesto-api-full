@@ -1,0 +1,30 @@
+.popup__button_disabled {
+  opacity: 0.2;
+  width: 358px;
+  height: 50.15px;
+  background-color: #E5E5E5;
+  border-radius: 2px;
+  color: black;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  margin-left: 36px;
+  margin-right: 36px;
+  margin-top: 48px;
+  margin-bottom: 36.51px;
+  border: 1px solid #000000;
+}
+
+@media only screen and (max-width: 532px) {
+  .popup__button_disabled {
+    width: 250px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .popup__button_disabled {
+    width: 190px;
+  }
+}
