@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const InvalidDataError = require('../errors/invalid-data-err.js');
+// const InvalidDataError = require('../errors/invalid-data-err.js');
 const NotFoundError = require('../errors/not-found-err.js');
 const getCards = (req, res) => {
   Card.find()
@@ -21,7 +21,13 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params._id)
     .orFail(()  => {throw new NotFoundError('Карточка не найдена')})
-    .then((card) => res.status(200).send(card))
+    .then((card) => {
+      if (req.user._id.toString() === card.owner.toString()) {
+        card.remove();
+        res.status(200).send(card);
+      }
+    })
+    // .then((card) => res.status(200).send(card))
     // .catch((err) => {
     //   if (err.name === 'CastError') {
     //     res.status(400).send({ message: 'Некорректные данные' });

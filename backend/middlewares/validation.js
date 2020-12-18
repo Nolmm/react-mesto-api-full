@@ -9,6 +9,16 @@ const authCheck = {
   }),
 };
 
+const signupCheck = {
+  [Segments.BODY]: Joi.object().keys({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2),
+    avatar: Joi.string().uri()
+  }),
+}
+
 const tokenCheck = {
   [Segments.HEADERS]: Joi.object({
     authorization: Joi.string().required().regex(/^Bearer /),
@@ -24,13 +34,13 @@ const createCardCheck = {
 
 const deleteCardCheck = {
   [Segments.PARAMS]: Joi.object().keys({
-    cardId: Joi.string().alphanum().length(24).required(),
+    _id: Joi.string().alphanum().length(24).required(),
   }),
 };
 
 const getUserCheck = {
   [Segments.PARAMS]: Joi.object().keys({
-    userId: Joi.string().alphanum().length(24).required(),
+    _id: Joi.string().alphanum().length(24).required(),
   }),
 };
 
@@ -39,5 +49,6 @@ module.exports = {
   tokenCheck,
   createCardCheck,
   deleteCardCheck,
-  getUserCheck
+  getUserCheck,
+  signupCheck
 }

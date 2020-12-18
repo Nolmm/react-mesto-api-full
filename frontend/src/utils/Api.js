@@ -116,5 +116,5 @@ class Api {
     }
 }
 
-const api = new Api('https://mesto.nomoreparties.co/v1/cohort-15/', 'ec958303-2883-4fc9-affb-18ff9d007ba6')
+const api = new Api('https://nolmm.students.nomoreparties.space', 'ec958303-2883-4fc9-affb-18ff9d007ba6')
 export default api;

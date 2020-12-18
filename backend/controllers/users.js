@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+// eslint-disable-next-line no-undef
 const { NODE_ENV, JWT_SECRET } = process.env;
 const InvalidDataError = require('../errors/invalid-data-err.js');
 // const UnAuthorizedErro = require('../errors/unauthorized-err.js');
@@ -11,7 +12,7 @@ const getUsers = (req, res) => {
     .then((data) => res.send(data))
     .catch(() => res.status(500).send({ message: 'Ошибка!' }));
 };
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const { _id } = req.params;
   User.findOne({ _id })
     .orFail(() => {throw new NotFoundError ('Пользователь не найден')})
@@ -52,7 +53,11 @@ const createUser = (req, res, next) => {
     about: req.body.about,
     avatar: req.body.avatar,
   }))
-  .then((user) => res.status(200).send(user))
+  .then((user) => {
+    res.status(200).send({
+      email: user.email
+    })
+  })
   .catch(next);
   // .catch((err) => {
   //   if (err.name === 'ValidationError') {
