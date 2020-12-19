@@ -10,9 +10,10 @@ module.exports = (req, res, next) => {
   }
 
   const token = authorization.replace('Bearer ', '');
+  // eslint-disable-next-line no-undef
   const { NODE_ENV, JWT_SECRET } = process.env;
   let payload;
-  
+
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
@@ -24,4 +25,4 @@ module.exports = (req, res, next) => {
   req.user = payload; // записываем пейлоуд в объект запроса
 
   next(); // пропускаем запрос дальше
-}; 
+};

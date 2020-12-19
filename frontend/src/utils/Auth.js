@@ -43,7 +43,7 @@ class Auth {
 }
 
 const auth = new Auth({
-    baseUrl: 'https://nolmm.students.nomoreparties.space',
+    baseUrl: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3003'}`,
     headers: {
         "Content-Type": "application/json"
     }

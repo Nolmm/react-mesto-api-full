@@ -1,6 +1,7 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const {NotFoundError} = require('./middlewares/validation.js')
+const {NotFoundError} = require('./errors/not-found-err.js')
 const bodyParser = require('body-parser');
 const { celebrate, errors } = require('celebrate');
 const {authCheck, tokenCheck, signupCheck} = require('./middlewares/validation.js');
@@ -46,13 +47,6 @@ app.use(errors());
 app.use((err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500
   const { statusCode = 500, message } = err;
-  if (err.name === 'ValidationError') {
-    return res.status(401).send({ message: 'Неверные данные' });
-  }
-  if (err.code === 11000) {
-    return res.status(409).send({ message: 'Пользователь с таким email уже зарегистрирован!' });
-  }
-
   res
     .status(statusCode)
     .send({
@@ -61,6 +55,7 @@ app.use((err, req, res, next) => {
         ? 'На сервере произошла ошибка'
         : message
     });
+    next();
 });
 
 app.listen(PORT, () => {

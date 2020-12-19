@@ -4,8 +4,9 @@ const jwt = require('jsonwebtoken');
 // eslint-disable-next-line no-undef
 const { NODE_ENV, JWT_SECRET } = process.env;
 const InvalidDataError = require('../errors/invalid-data-err.js');
-// const UnAuthorizedErro = require('../errors/unauthorized-err.js');
+const UnAuthorizedError = require('../errors/unauthorized-err.js');
 const NotFoundError = require('../errors/not-found-err.js');
+const ConflictError = require('../errors/conflict-err.js')
 
 const getUsers = (req, res) => {
   User.find()
@@ -53,12 +54,24 @@ const createUser = (req, res, next) => {
     about: req.body.about,
     avatar: req.body.avatar,
   }))
-  .then((user) => {
-    res.status(200).send({
-      email: user.email
-    })
+  .catch((err) => {
+      if (err.code === 11000) {
+      next (new ConflictError('Пользователь с таким email уже зарегистрирован'));
+}
+      if (err.name === 'ValidationError') {
+        next ( new InvalidDataError( 'Некорректный запрос'));
+      }
+else {
+      next(err);
+}
+})
+.then(() => {
+  res.status(200).send({
+    message: 'Вы успешно зарегистрировались!'
   })
-  .catch(next);
+})
+.catch(next);
+  };
   // .catch((err) => {
   //   if (err.name === 'ValidationError') {
   //     res.status(400).send({ message: 'Некорректный запрос' });
@@ -66,7 +79,7 @@ const createUser = (req, res, next) => {
   //     res.status(500).send({ message: 'Ошибка!' });
   //   }
   // });
-}
+
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
@@ -78,12 +91,14 @@ const login = (req, res, next) => {
       );
       res.send({ token });
     })
-    // .catch((err) => {
-    //   res
-    //     .status(401)
-    //     .send({ message: err.message });
-    // });
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new UnAuthorizedError('Неправильные почта или пароль'))
+      }
+      else {
+        next(err);
+      }
+    });
 };
 module.exports = {
   getUsers,
