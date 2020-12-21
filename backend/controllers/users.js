@@ -43,35 +43,74 @@ const getUserMe = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
+  const { name, about, avatar, email, password } = req.body;
   if (req.body.password.length < 8) {
-    throw new InvalidDataError('Длина пароля меньше 8 символов!');
-  }
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => User.create({
-    email: req.body.email,
-    password: hash,
-    name: req.body.name,
-    about: req.body.about,
-    avatar: req.body.avatar,
-  }))
-  .catch((err) => {
-      if (err.code === 11000) {
-      next (new ConflictError('Пользователь с таким email уже зарегистрирован'));
-}
-      if (err.name === 'ValidationError') {
-        next ( new InvalidDataError( 'Некорректный запрос'));
+        throw new InvalidDataError('Длина пароля меньше 8 символов!');
       }
-else {
-      next(err);
-}
-})
-.then(() => {
-  res.status(200).send({
-    message: 'Вы успешно зарегистрировались!'
-  })
-})
-.catch(next);
-  };
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+        User.create({
+          email,
+          password: hash,
+          name,
+          about,
+          avatar,
+        })
+        .then((user) => res.status(200).send(user))
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            next ( new InvalidDataError( 'Некорректный запрос'));
+          } else if (err.code === 11000) {
+            next (new ConflictError('Пользователь с таким email уже зарегистрирован'));
+          } else {
+            next(err);
+          }
+        })
+    })
+    .catch(() => {
+
+      next ( new InvalidDataError( 'Некорректный запрос'));
+    })
+  }
+//   const { name, about, avatar, email, password } = req.body;
+//   if (req.body.password.length < 8) {
+//     throw new InvalidDataError('Длина пароля меньше 8 символов!');
+//   }
+//   bcrypt.hash(password, 10)
+//     .then((hash) => User.create({
+//     email,
+//     password: hash,
+//     name,
+//     about,
+//     avatar,
+//   })
+//   .then(() => {
+//     res.status(200).send({
+//       message: 'Вы успешно зарегистрировались!'
+//     })
+//   })
+
+//   .catch((err) => {
+//     if (err.name === 'ValidationError') {
+//         next ( new InvalidDataError( 'Некорректный запрос'));
+//       }
+//       else if (err.code === 11000) {
+//       next (new ConflictError('Пользователь с таким email уже зарегистрирован'));
+// }
+
+// else {
+//       next(err);
+// })
+// })
+//   .catch(() => {
+//     next ( new InvalidDataError( 'Некорректный запрос'));
+//   });
+// .then(() => {
+//   res.status(200).send({
+//     message: 'Вы успешно зарегистрировались!'
+//   })
+// })
+  // };
   // .catch((err) => {
   //   if (err.name === 'ValidationError') {
   //     res.status(400).send({ message: 'Некорректный запрос' });
@@ -82,8 +121,14 @@ else {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return next(new InvalidDataError('Не передан пароль или email'))
+  }
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      // if (!user) {
+      //   throw new UnAuthorizedError('Неправильные почта или пароль');
+      // }
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -91,13 +136,13 @@ const login = (req, res, next) => {
       );
       res.send({ token });
     })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
+    .catch(() => {
+      // if (err.name === 'ValidationError') {
         next(new UnAuthorizedError('Неправильные почта или пароль'))
-      }
-      else {
-        next(err);
-      }
+      // }
+      // else {
+      //   next(err);
+      // }
     });
 };
 module.exports = {

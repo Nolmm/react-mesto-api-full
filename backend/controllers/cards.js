@@ -20,16 +20,47 @@ const createCard = (req, res, next) => {
 
 };
 const deleteCard = (req, res, next) => {
-  const owner = req.user._id;
-  Card.findOne(req.params._id)
-    .orFail(()  => {throw new NotFoundError('Карточка не найдена')})
+  const { _id } = req.params;
+  Card.findById(_id)
+  .then((card) => {
+    if (!card) {
+      throw new NotFoundError('Карточка не найдена')
+    }
+    if (req.user._id !== card.owner.toString()) {
+      throw new ForbiddenError('Недостаточно прав для удаления карточки');
+    }
+    Card.findByIdAndRemove(_id)
     .then((card) => {
-      if (String(card.owner) !== owner) {
-        throw new ForbiddenError('Недостаточно прав для удаления карточки');
-      }
-      return Card.findByIdAndDelete(card._id);
+      res.send({data: card})
     })
-    .then((success) => res.send(success))
+    .catch(next);
+  })
+  .catch(err => {
+    if (err.kind === 'ObjectId') {
+      next(new NotFoundError('Карточка не найдена'))
+    }
+    else {
+      next(err)
+    }
+  })
+}
+  // const deleteCard = (req, res, next) => {
+  // // const owner = req.user._id;
+  // Card.findByIdAndRemove(req.params._id)
+  //   .orFail(()  => {throw new NotFoundError('Карточка не найдена')})
+  // // Card.findOne(req.params._id)
+  // //   .orFail(()  => {throw new NotFoundError('Карточка не найдена')})
+  //   .then((card) => {
+  //     // if (toString(card.owner) !== owner) {
+  //       console.log(req.user._id, card.owner.toString())
+  //       if (req.user._id.toString() === card.owner.toString()) {
+  //       throw new ForbiddenError('Недостаточно прав для удаления карточки');
+  //     }
+  //     else {
+  //       res.status(200).send(card);
+  //     }
+  //   })
+    // .then((success) => res.send(success))
     // .then((card) => res.status(200).send(card))
     // .catch((err) => {
     //   if (err.name === 'CastError') {
@@ -38,9 +69,9 @@ const deleteCard = (req, res, next) => {
     //     res.status(404).send({ message: 'Карточка не найдена' });
     //   } else res.status(500).send({ message: 'Ошибка!' });
     // });
-    .catch(next);
-};
-
+    // .catch(next);
+// };
+  // }
 module.exports = {
   getCards,
   createCard,
