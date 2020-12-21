@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const regex = require('../utils/regex');
+// const regex = require('../utils/regex');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(v) {
-        return regex.url.test(v);
+        return (/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm).test(v);
       },
       message: 'Неверный формат ссылки',
     },
@@ -59,7 +59,7 @@ userSchema.statics.findUserByCredentials = function (email, password) {
             return Promise.reject(new Error('Неправильные почта или пароль'));
           }
 
-          return user; 
+          return user;
         });
     });
 };

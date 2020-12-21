@@ -16,7 +16,7 @@ const { cardRouter } = require('./routers/cards.js');
 const {login, createUser} = require('./controllers/users.js');
 const auth = require('./middlewares/auth.js');
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/mestodb2', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
