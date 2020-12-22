@@ -28,6 +28,7 @@
     "express-validator": "^6.8.0",
     "express-winston": "^4.0.5",
     "mongoose": "^5.11.8",
+    "validator": "^13.5.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
