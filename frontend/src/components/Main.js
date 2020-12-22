@@ -1,12 +1,12 @@
 import React from 'react';
-import PopupWithForm from './PopupWithForm.js';
-import ImagePopup from './ImagePopup.js';
+import PopupWithForm from './PopupWithForm';
+import ImagePopup from './ImagePopup';
 // import api from '../utils/Api.js';
-import Card from './Card.js';
-import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
+import Card from './Card';
+import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function Main(props) {
-  const currentUser = React.useContext(CurrentUserContext)
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <main>
@@ -26,7 +26,7 @@ function Main(props) {
       </section>
       <section className="elements">
         <ul className="elements__list">
-          {props.cards.map((card, _id) => (
+          {props.cards.map((card) => (
             <Card key={card._id}
               card={card}
               onCardClick={props.onCardClick}
@@ -40,7 +40,7 @@ function Main(props) {
         onClose={props.onClose} />
       <PopupWithForm name="question" title="Вы уверены?" buttonTitle="Да" />
     </main>
-  )
+  );
 }
 
 export default Main;

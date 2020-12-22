@@ -1,19 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
 function FormAuthLog(props) {
-  function handleEmailInput (evt) {
+  function handleEmailInput(evt) {
     props.setEmail(evt.target.value);
-}
-function handlePasswordInput (evt) {
+  }
+  function handlePasswordInput(evt) {
     props.setPassword(evt.target.value);
-}
-function submitHandler (evt) {
+  }
+  function submitHandler(evt) {
     evt.preventDefault();
     props.onSubmit();
-}
-return (
+  }
+  return (
   <form className="formauth" onSubmit={submitHandler}>
     <h2 className="formauth__title">{props.title}</h2>
     <div className="formauth__container">
@@ -24,7 +23,7 @@ return (
     <Link className="formauth__link" to={props.route}>{props.linkTitle}</Link>
   </form>
 
-)
+  );
 }
 
 export default FormAuthLog;

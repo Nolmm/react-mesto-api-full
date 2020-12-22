@@ -1,6 +1,5 @@
 import React from 'react';
-import PopupWithForm from './PopupWithForm.js';
-
+import PopupWithForm from './PopupWithForm';
 
 function EditAvatarPopup(props) {
   const avatarRef = React.useRef();
@@ -13,15 +12,11 @@ function EditAvatarPopup(props) {
     });
   }
   return (
-    <PopupWithForm name="editavatar" title="Обновить аватар" formName="edit-avatar" children={
-      <>
-        <input ref={avatarRef} type="url" id="avatar-input" name="link" placeholder="Ссылка" className="popup__item popup__item_avatar" required minLength="1" />
+    <PopupWithForm name="editavatar" title="Обновить аватар" formName="edit-avatar" buttonTitle="Сохранить" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}>
+       <input ref={avatarRef} type="url" id="avatar-input" name="link" placeholder="Ссылка" className="popup__item popup__item_avatar" required minLength="1" />
         <span id="avatar-input-error" className="popup__input-error">Вы пропустили это поле</span>
-      </>
-    }
-      buttonTitle="Сохранить" isOpen={props.isOpen} onClose={props.onClose} onSubmit={handleSubmit}
-    />
-  )
+    </PopupWithForm>
+  );
 }
 
-export default EditAvatarPopup
+export default EditAvatarPopup;

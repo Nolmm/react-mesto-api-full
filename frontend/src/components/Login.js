@@ -1,27 +1,27 @@
 import React from 'react';
-import FormAuthLog from './FormAuthLog.js'
+import FormAuthLog from './FormAuthLog';
 
 function Login(props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   React.useEffect(() => {
-    props.setLink({title: 'Регистация', link: false});
-}, []);
+    props.setLink({ title: 'Регистация', link: false });
+  }, []);
 
   function onSubmit() {
     props.onSubmit({
-      password: password,
-      email: email
-    })
+      password,
+      email,
+    });
   }
 
   return (
-    <FormAuthLog title="Вход" buttonTitle="Войти" linkTitle = "Ещё не зарегистрированы? Регистрация" 
+    <FormAuthLog title="Вход" buttonTitle="Войти" linkTitle = "Ещё не зарегистрированы? Регистрация"
     route="/signup" onSubmit = { onSubmit }
     setEmail = { setEmail }
     setPassword = { setPassword } />
-  )
+  );
 }
 
 export default Login;

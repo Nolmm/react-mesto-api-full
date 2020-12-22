@@ -12,7 +12,7 @@ function PopupWithForm(props) {
         </form>
       </div>
     </section>
-  )
+  );
 }
 
 export default PopupWithForm;
