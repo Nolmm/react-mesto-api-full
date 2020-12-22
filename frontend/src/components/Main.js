@@ -20,7 +20,7 @@ function Main(props) {
           <div className="profile__wrapper">
             <h1 className="profile__title">{currentUser.name}</h1>
             <p className="profile__subtitle">{currentUser.about}</p></div>
-          <button type="button" className="profile__edit-button" onClick={props.onEditProfile}></button>
+          {/* <button type="button" className="profile__edit-button" onClick={props.onEditProfile}></button> */}
         </div>
         <button type="button" className="profile__add-button" onClick={props.onAddPlace}></button>
       </section>

@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
 function Card(props) {
   const currentUser = React.useContext(CurrentUserContext)
   // Определяем, являемся ли мы владельцем текущей карточки
-  const isOwn = props.card.owner._id === currentUser._id;
+  const isOwn = props.card.owner === currentUser._id;
 
   // Создаём переменную, которую после зададим в `className` для кнопки удаления
   const cardDeleteButtonClassName = (
@@ -16,9 +16,9 @@ function Card(props) {
     props.onCardClick(props.card);
   }
 
-  function handleLikeClick() {
-    props.onCardLike(props.card);
-  }
+  // function handleLikeClick() {
+  //   props.onCardLike(props.card);
+  // }
 
   function handleDeleteClick() {
     props.onCardDelete(props.card);
@@ -39,10 +39,10 @@ function Card(props) {
         <img className="elements__image" src={props.card.link} alt={props.card.name} onClick={handleClick} />
         <figcaption className="elements__figcaption">
           <h3 className="elements__title">{props.card.name}</h3>
-          <div className="elements__like_group">
+          {/* <div className="elements__like_group">
             <button type="button" className={cardLikeButtonClassName} onClick={handleLikeClick}></button>
             <span className="elements__like_number">{props.card.likes.length}</span>
-          </div>
+          </div> */}
         </figcaption>
       </figure>
     </li>

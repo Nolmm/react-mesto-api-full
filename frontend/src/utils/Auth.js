@@ -43,7 +43,7 @@ class Auth {
 }
 
 const auth = new Auth({
-    baseUrl: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3003'}`,
+    baseUrl: `${window.location.protocol}${process.env.REACT_APP_API_URL || '//localhost:3001'}`,
     headers: {
         "Content-Type": "application/json"
     }

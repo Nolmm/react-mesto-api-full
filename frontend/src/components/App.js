@@ -35,22 +35,22 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    // const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-    (!isLiked ? api.putLike(`cards/likes/${card._id}`) : api.deleteItems(`cards/likes/${card._id}`)).then((newCard) => {
-      // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
-      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-      // Обновляем стейт
-      setCards(newCards);
-    })
-    .catch((err) => {
-      console.log(err)
-    });
+    // // Отправляем запрос в API и получаем обновлённые данные карточки
+    // (!isLiked ? api.putLike(`cards/likes/${card._id}`) : api.deleteItems(`cards/likes/${card._id}`)).then((newCard) => {
+    //   // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
+    //   const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+    //   // Обновляем стейт
+    //   setCards(newCards);
+    // })
+    // .catch((err) => {
+    //   console.log(err)
+    // });
   }
 
   function handleCardDelete(card) {
-    api.deleteItems(`cards/${card._id}`)
+    api.deleteItems(`/cards/${card._id}`)
       .then(() => {
         // Формируем новый массив на основе имеющегося, подставляя в него новую карточку
         const newCards = cards.filter((current) => current._id !== card._id);
@@ -62,16 +62,20 @@ function App() {
       });
   }
   React.useEffect(() => {
-    Promise.all([api.getItems('cards'), api.getItems('users/me')])
+    if (loggedIn) {
+    Promise.all([api.getItems('/cards'), api.getItems('/users/me')])
       .then(([cardsData, userData]) => {
+        setEmail(userData.email);
         setCards(cardsData);
+        
         setcurrentUser(userData)
       })
       .catch((err) => {
         console.log(err)
       })
-  },
-    []
+  }
+},
+    [loggedIn]
   )
 
 
@@ -81,13 +85,13 @@ function App() {
     if (jwt) {
       auth.getToken()
         .then((res) => {
-          res.data ? setLoggedIn(true) : setLoggedIn(false);
-          setEmail(res.data.email);
+          res.email ? setLoggedIn(true) : setLoggedIn(false);
+          setEmail(res.email);
           history.push('/');
         })
         .catch(err => console.log(err));
     }
-  }, [loggedIn])
+  }, [])
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true)
@@ -117,7 +121,7 @@ function App() {
   }
 
   function handleUpdateUser(userData) {
-    api.patchUserInfo('users/me', userData).then(newUserInfo => {
+    api.patchUserInfo('/users/me', userData).then(newUserInfo => {
       setcurrentUser(newUserInfo);
       closeAllPopups();
     })
@@ -127,7 +131,7 @@ function App() {
   }
 
   function handleUpdateAvatar(userAvatar) {
-    api.patchAvatar('users/me/avatar', userAvatar).then(newUserAvatar => {
+    api.patchAvatar('/users/me/avatar', userAvatar).then(newUserAvatar => {
       setcurrentUser(newUserAvatar);
       closeAllPopups();
     })
@@ -137,7 +141,7 @@ function App() {
   }
 
   function handleAddPlace(cardData) {
-    api.postNewCard('cards', cardData).then(newCard => {
+    api.postNewCard('/cards', cardData).then(newCard => {
       setCards([newCard, ...cards]);
       closeAllPopups();
     })

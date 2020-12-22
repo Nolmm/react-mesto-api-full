@@ -9,7 +9,7 @@ const {authCheck, tokenCheck, signupCheck} = require('./middlewares/validation.j
 const { requestLogger, errorLogger } = require('./middlewares/logger.js')
 
 // eslint-disable-next-line no-undef
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 
 const app = express();
 const { userRouter } = require('./routers/users.js');
