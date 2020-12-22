@@ -1,3 +1,4 @@
+const cors = require('cors')
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -15,7 +16,7 @@ const { userRouter } = require('./routers/users.js');
 const { cardRouter } = require('./routers/cards.js');
 const {login, createUser} = require('./controllers/users.js');
 const auth = require('./middlewares/auth.js');
-
+app.use(cors())
 mongoose.connect('mongodb://localhost:27017/mestodb2', {
   useNewUrlParser: true,
   useCreateIndex: true,
